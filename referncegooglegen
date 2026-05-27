@@ -1,0 +1,69 @@
+import os
+import json
+import google.generativeai as genai
+
+# Configuration
+genai.configure(api_key="YOUR_GEMINI_API_KEY")
+model = genai.GenerativeModel('gemini-1.5-pro') # Or your preferred version
+
+def generate_course_metadata(transcript_path):
+    # 1. Read the transcript file
+    with open(transcript_path, 'r') as f:
+        transcript_text = f.read()
+
+    # 2. Define the "Master Course Architect" Prompt
+    prompt = f"""
+    Role: You are an expert Instructional Designer and Senior Content Strategist.
+    Task: Analyze the provided transcript and generate a comprehensive "Course Marketing & Structure Kit."
+    
+    Required Output Format (JSON):
+    {{
+      "core_identity": {{
+        "primary_title": "Catchy title",
+        "alternative_title": "SEO title",
+        "category": "Topic area",
+        "tags": ["tag1", "tag2"]
+      }},
+      "hook": {{
+        "short_description": "2-3 sentences",
+        "learning_objectives": ["point 1", "point 2"],
+        "big_promise": "One-liner"
+      }},
+      "video_metadata": {{
+        "estimated_duration": "MM:SS",
+        "youtube_chapters": [
+          {{"timestamp": "00:00", "title": "Introduction"}},
+          {{"timestamp": "01:30", "title": "Key Concept"}}
+        ]
+      }},
+      "student_support": {{
+        "faq": [
+          {{"question": "Q1", "answer": "A1"}}
+        ],
+        "target_audience": "Level and role"
+      }}
+    }}
+
+    Constraints: Use ONLY the provided transcript. No phrases like "In this video...".
+    
+    Transcript Start:
+    {transcript_text}
+    """
+
+    # 3. Generate content
+    response = model.generate_content(prompt)
+    
+    # 4. Save as JSON
+    output_filename = transcript_path.replace(".txt", "_meta.json")
+    try:
+        # Extract JSON from response if it contains markdown markers
+        content = response.text.strip().replace('```json', '').replace('```', '')
+        metadata = json.loads(content)
+        with open(output_filename, 'w') as f:
+            json.dump(metadata, f, indent=4)
+        print(f"Metadata successfully saved to {output_filename}")
+    except Exception as e:
+        print(f"Error parsing or saving metadata: {e}")
+
+# Usage
+# generate_course_metadata("transcripts/Basic_Texture_Masterclass.txt")
