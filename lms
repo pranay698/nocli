@@ -1,0 +1,508 @@
+Build an AI-powered course operations and content management application for a large online learning business with 2000+ courses.
+
+This business runs multi-day and multi-module creative masterclasses such as resin art, candle making, silicone mold making, baking, makeup, soap making, nail art, pottery, and similar skill-based workshops.
+
+Courses are often structured like:
+- 2-day, 3-day, or 5-day programs
+- each day may have one or more live or recorded sessions
+- each session may be 1 hour or more
+- sessions may be in English, Hindi, or bilingual
+- recordings, PDFs, e-books, vendor details, trainer Instagram, Zoom links, WhatsApp group links, and materials are often shared
+
+The application should be designed for:
+1. internal course admin team
+2. content operations team
+3. student support team
+4. marketing team
+5. leadership reporting
+
+The app should manage the full lifecycle of courses, modules, assets, AI-generated content, publishing, and social proof.
+
+Create the following main modules/forms:
+
+1. Courses
+2. Course Batches / Cohorts
+3. Course Days / Modules
+4. Lessons / Sessions
+5. Course Assets
+6. Course Content Types
+7. Materials Used
+8. Products Used
+9. FAQs
+10. Transcripts
+11. Student Reviews
+12. Social Proof
+13. Trainers
+14. Categories
+15. Learning Pathways
+16. Landing Page Content
+17. Automation Queue / AI Processing Status
+
+-----------------------------------
+COURSES MODULE
+-----------------------------------
+Fields:
+- Course ID
+- Internal Course Code
+- Course Title
+- Short Title
+- Slug
+- Category
+- Subcategory
+- Course Format (Live / Recorded / Hybrid)
+- Course Type (Workshop / Masterclass / Challenge / Cohort / Certification)
+- Difficulty Level (Beginner / Intermediate / Advanced)
+- Language (English / Hindi / Bilingual / Other)
+- Duration in Days
+- Total Sessions
+- Average Session Duration
+- Short Description
+- Full Description
+- One-Line Value Proposition
+- Who This Is For
+- Who This Is Not For
+- Learning Outcomes
+- Skills Covered
+- Course Status (Draft / Content Pending / Review Pending / Ready to Publish / Published / Archived)
+- Featured
+- Bestseller
+- Evergreen
+- Price
+- Offer Price
+- Thumbnail URL
+- Hero Image URL
+- Promo Video URL
+- Landing Page URL
+- SEO Title
+- SEO Description
+- SEO Keywords
+- CTA Primary Text
+- CTA Primary Link
+- CTA Secondary Text
+- CTA Secondary Link
+- Sort Order
+- Trainer
+- Social Proof Summary
+- Average Rating
+- Review Count
+- Admin Notes
+- Created At
+- Updated At
+
+-----------------------------------
+COURSE BATCHES / COHORTS MODULE
+-----------------------------------
+Fields:
+- Batch ID
+- Course
+- Batch Name
+- Start Date
+- End Date
+- Status
+- Zoom Link
+- WhatsApp Group Link
+- Recording Delivery Time
+- Support Contact
+- Batch Notes
+
+-----------------------------------
+COURSE DAYS / MODULES MODULE
+-----------------------------------
+Fields:
+- Module ID
+- Course
+- Batch (optional)
+- Day Number
+- Module Title
+- Module Subtitle
+- Module Description
+- Module Objective
+- Sequence Order
+- Is Practical
+- Is Theory
+- Is Published
+- Estimated Duration
+- Key Outcomes
+- Materials Needed
+- Homework / Practice Task
+- Notes
+
+-----------------------------------
+LESSONS / SESSIONS MODULE
+-----------------------------------
+Fields:
+- Session ID
+- Course
+- Module
+- Batch (optional)
+- Session Title
+- Session Type (Live / Recording / Demo / Q&A / Theory / Practical)
+- Session Number
+- Recording URL
+- Audio URL
+- Transcript Link or Text
+- Session Summary
+- Key Topics Covered
+- Key Tips
+- Common Mistakes
+- Questions Asked
+- Session Language
+- Session Duration
+- Session Date
+- Trainer
+- Materials Used
+- Products Used
+- Assignment / Practice
+- Action Points
+- Publish to Student View (Yes/No)
+
+-----------------------------------
+TRANSCRIPTS MODULE
+-----------------------------------
+Fields:
+- Transcript ID
+- Course
+- Module
+- Session
+- Source Type (Audio / Video / Manual / Imported)
+- Transcript Raw Text
+- Transcript Cleaned Text
+- Transcript Language
+- Transcript Status (Pending / Uploaded / Cleaned / AI Processed)
+- AI Summary
+- AI FAQ
+- AI Key Learning Points
+- AI Mistakes To Avoid
+- AI Material Extraction
+- AI Product Extraction
+- AI Beginner Tips
+- AI Advanced Tips
+- AI Earning Opportunity Notes
+- AI Social Snippets
+- AI Caption Ideas
+- AI Blog Draft
+- AI Landing Page Copy
+- Processed At
+
+-----------------------------------
+FAQS MODULE
+-----------------------------------
+Fields:
+- FAQ ID
+- Course
+- Module (optional)
+- Session (optional)
+- Question
+- Answer
+- FAQ Type (Course / Materials / Technical / Access / Beginner / Certification / Business / Product)
+- Source (Manual / AI Generated / From Transcript / From Student Query)
+- Priority
+- Publish on Website
+- Sort Order
+- Status
+
+-----------------------------------
+COURSE ASSETS MODULE
+-----------------------------------
+Fields:
+- Asset ID
+- Course
+- Module (optional)
+- Session (optional)
+- Asset Type (Recording / PDF / Ebook / Image / Thumbnail / Banner / Worksheet / Zoom Link / WhatsApp Link / Vendor Link / Product Link / Template / Certificate)
+- Asset Title
+- Asset Description
+- File URL
+- Storage Source (DigitalOcean Spaces / External URL / Uploaded)
+- Preview Enabled
+- Download Enabled
+- Public or Internal
+- Sort Order
+- Status
+
+-----------------------------------
+COURSE CONTENT TYPES MODULE
+-----------------------------------
+Fields:
+- Content Type ID
+- Course
+- Module (optional)
+- Session (optional)
+- Has Recording
+- Has PDF
+- Has Material List
+- Has Product List
+- Has Transcript
+- Has FAQ
+- Has Social Proof
+- Has Student Reviews
+- Has Vendor List
+- Has Homework
+- Has Earning Pathway
+- Has Tips & Tricks
+- Has Mistakes To Avoid
+- Has Certificate
+- Content Completeness Score
+
+-----------------------------------
+MATERIALS USED MODULE
+-----------------------------------
+Fields:
+- Material ID
+- Course
+- Module
+- Session
+- Material Name
+- Material Category
+- Quantity
+- Unit
+- Optional or Required
+- Beginner Friendly
+- Vendor Name
+- Vendor URL
+- Approx Cost
+- Notes
+
+-----------------------------------
+PRODUCTS USED MODULE
+-----------------------------------
+Fields:
+- Product ID
+- Course
+- Module
+- Session
+- Product Name
+- Product Type
+- Brand
+- Product URL
+- Vendor URL
+- Approx Cost
+- Notes
+- Recommended
+- Internal Priority
+
+-----------------------------------
+STUDENT REVIEWS MODULE
+-----------------------------------
+Fields:
+- Review ID
+- Course
+- Student Name
+- Rating
+- Review Text
+- Review Type (Text / WhatsApp / Screenshot / Video / Testimonial)
+- Review Source
+- Outcome Mentioned
+- Permission to Publish
+- Publish on Website
+- Featured Review
+- Review Date
+
+-----------------------------------
+SOCIAL PROOF MODULE
+-----------------------------------
+Fields:
+- Social Proof ID
+- Course
+- Proof Type (Testimonial / Screenshot / Rating / Transformation / Completion / Revenue Story / Before-After / Community Feedback)
+- Title
+- Description
+- Media URL
+- Student Name
+- Student Location
+- Outcome
+- Publish on Website
+- Use in Ads
+- Use on Landing Page
+- Sort Order
+
+-----------------------------------
+TRAINERS MODULE
+-----------------------------------
+Fields:
+- Trainer ID
+- Trainer Name
+- Bio
+- Expertise
+- Instagram Handle
+- Profile Image URL
+- Trainer Intro
+- Languages
+- Featured
+- Active
+
+-----------------------------------
+CATEGORIES MODULE
+-----------------------------------
+Fields:
+- Category ID
+- Name
+- Slug
+- Parent Category
+- Description
+- Sort Order
+- Active
+
+-----------------------------------
+LEARNING PATHWAYS MODULE
+-----------------------------------
+Fields:
+- Pathway ID
+- Course
+- Pathway Title
+- Beginner Starting Point
+- Recommended Sequence
+- What To Learn First
+- What To Practice Next
+- Common Beginner Mistakes
+- Business / Earning Opportunities
+- Upsell Next Course
+- Toolkit Needed
+- Time To Outcome
+- Publish on Website
+
+-----------------------------------
+LANDING PAGE CONTENT MODULE
+-----------------------------------
+Fields:
+- Section ID
+- Course
+- Section Type (Hero / Benefits / Outcomes / Curriculum / Materials / Reviews / FAQ / CTA / Trainer / Proof / Learning Pathway)
+- Section Name
+- Heading
+- Subheading
+- Body Content
+- CTA Text
+- CTA Link
+- Image URL
+- Sort Order
+- Active
+
+-----------------------------------
+AUTOMATION QUEUE / AI PROCESSING STATUS MODULE
+-----------------------------------
+Fields:
+- Job ID
+- Course
+- Module
+- Session
+- Transcript Source
+- Processing Type (Transcript Cleanup / FAQ Generation / Summary / Materials Extraction / Product Extraction / Review Drafting / Social Snippets / Landing Page Copy / Pathway Generation)
+- Status (Pending / In Progress / Completed / Failed)
+- Triggered By
+- Last Run Time
+- Error Notes
+- Output Reference
+
+-----------------------------------
+RELATIONSHIPS
+-----------------------------------
+Create lookup relationships:
+- Courses -> Categories
+- Courses -> Trainers
+- Courses -> Modules
+- Courses -> Assets
+- Courses -> FAQs
+- Courses -> Reviews
+- Courses -> Social Proof
+- Courses -> Learning Pathways
+- Modules -> Sessions
+- Sessions -> Transcripts
+- Sessions -> Materials Used
+- Sessions -> Products Used
+- Sessions -> Assets
+
+-----------------------------------
+REPORTS / VIEWS
+-----------------------------------
+Create useful admin reports:
+- All Courses
+- Published Courses
+- Draft Courses
+- Courses Missing Transcript
+- Courses Missing FAQ
+- Courses Missing Reviews
+- Courses Missing Social Proof
+- Courses Missing Materials List
+- Courses Missing Product List
+- Courses Missing Learning Pathway
+- AI Processing Pending
+- AI Processing Failed
+- Recently Updated Courses
+- Featured Courses
+- Bestseller Courses
+- Batch-wise Courses
+- Trainer-wise Courses
+- Category-wise Courses
+- Courses Ready to Publish
+- Courses With Incomplete Content
+- Session Library
+- Recording Library
+- Transcript Library
+- Review Approval Queue
+
+-----------------------------------
+DASHBOARDS
+-----------------------------------
+Create dashboards for:
+- total courses
+- published vs draft courses
+- transcript completion
+- FAQ completion
+- review and social proof completion
+- top categories
+- trainer distribution
+- content completeness score
+- AI processing queue status
+
+-----------------------------------
+AUTOMATIONS / WORKFLOWS
+-----------------------------------
+Create workflows for:
+1. when a transcript is uploaded, mark transcript status as uploaded
+2. when transcript is cleaned, move to AI processing queue
+3. when AI processing is completed, auto-fill FAQ, summary, learning points, beginner tips, mistakes to avoid, materials, and products
+4. when course content completeness crosses threshold, mark course as Ready to Publish
+5. when a review is approved, push it to social proof options
+6. when a course is published, make landing page sections active
+7. when a new recording asset is added, link it to the correct session and course
+8. when admin marks content incomplete, send back to content queue
+9. when batch ends, move it to completed status
+10. when a course has no transcript or FAQ after recording upload, flag it for content ops
+
+-----------------------------------
+AI CONTENT OUTPUTS
+-----------------------------------
+For each transcript-enabled session or course, support generation of:
+- clean summary
+- beginner summary
+- detailed notes
+- key concepts
+- practical steps
+- tools and materials list
+- products used
+- vendor references
+- FAQ
+- mistakes to avoid
+- pro tips
+- captions for social media
+- short promotional hooks
+- landing page copy
+- student follow-up resources
+- structured learning pathway
+- earning or monetization pathway where relevant
+
+-----------------------------------
+ADMIN UX
+-----------------------------------
+Build a clean admin interface with:
+- form views
+- table views
+- kanban or status views where possible
+- filters
+- quick edit for status, featured, sort order, and publish flags
+- easy access to recordings, transcript text, FAQ, reviews, and assets from the course page
+
+The application should be scalable, automation-friendly, and suitable for a large content operations team managing thousands of courses.
+
+
