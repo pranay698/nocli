@@ -1,0 +1,165 @@
+import React, { useState } from 'react';
+import { 
+  Play, Download, FileText, RefreshCw, AlertCircle, 
+  CheckCircle, Clock, Database, PlusCircle, LayoutDashboard 
+} from 'lucide-react';
+
+export default function AcadmaDashboard() {
+  const [activeTab, setActiveTab] = useState('create');
+
+  // --- MOCK DATA ---
+  const activeQueue = [
+    { id: 'TSK-001', course: 'Day 1 Resin Fundamentals', stage: 'WHISPER_SLOW', status: 'PROCESSING', progress: 65 },
+    { id: 'TSK-002', course: 'Day 2 Coating Techniques', stage: 'DOWNLOADING', status: 'PROCESSING', progress: 20 },
+    { id: 'TSK-003', course: 'Day 3 Advanced Casting', stage: 'GCS_UPLOAD', status: 'QUEUED', progress: 0 },
+    { id: 'TSK-004', course: 'Day 4 Color Pigments', stage: 'FFMPEG_MP3', status: 'FAILED', progress: 14 },
+  ];
+
+  const history = [
+    { id: 'HST-998', title: 'Intro to Resin Safety', type: '1-Day', date: '2026-05-25' },
+    { id: 'HST-999', title: 'Mastering Pot Life', type: '5-Day (Merged)', date: '2026-05-24' },
+  ];
+
+  return (
+    <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
+      
+      {/* SIDEBAR */}
+      <div className="w-64 bg-slate-900 text-slate-100 p-6 flex flex-col">
+        <h1 className="text-2xl font-bold tracking-tight text-indigo-400 mb-10">Acadma<span className="text-white">Admin</span></h1>
+        <nav className="space-y-4 flex-1">
+          <button onClick={() => setActiveTab('create')} className={`flex items-center gap-3 w-full p-3 rounded-lg text-left transition-colors ${activeTab === 'create' ? 'bg-indigo-600' : 'hover:bg-slate-800'}`}>
+            <PlusCircle size={20} /> Create Task
+          </button>
+          <button onClick={() => setActiveTab('queue')} className={`flex items-center gap-3 w-full p-3 rounded-lg text-left transition-colors ${activeTab === 'queue' ? 'bg-indigo-600' : 'hover:bg-slate-800'}`}>
+            <RefreshCw size={20} /> Live Queue <span className="ml-auto bg-indigo-500 text-xs px-2 py-1 rounded-full">4</span>
+          </button>
+          <button onClick={() => setActiveTab('history')} className={`flex items-center gap-3 w-full p-3 rounded-lg text-left transition-colors ${activeTab === 'history' ? 'bg-indigo-600' : 'hover:bg-slate-800'}`}>
+            <Database size={20} /> History & Assets
+          </button>
+        </nav>
+      </div>
+
+      {/* MAIN CONTENT AREA */}
+      <div className="flex-1 overflow-auto p-10">
+        
+        {/* CREATE TASK TAB */}
+        {activeTab === 'create' && (
+          <div className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+            <h2 className="text-2xl font-bold mb-6">New Processing Task</h2>
+            <form className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium mb-2">Google Drive URL (Video or Audio)</label>
+                <input type="text" placeholder="https://drive.google.com/file/d/..." className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" />
+              </div>
+              
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Course Type</label>
+                  <select className="w-full p-3 border border-slate-300 rounded-lg">
+                    <option>1-Day Masterclass</option>
+                    <option>5-Day Series</option>
+                    <option>10-Day Bootcamp</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Processing Engine</label>
+                  <select className="w-full p-3 border border-slate-300 rounded-lg">
+                    <option>Whisper Tiny (Fast, Lower Accuracy)</option>
+                    <option>Whisper Slow (Slow, High Accuracy)</option>
+                    <option>MP3 Extraction Only (FFmpeg)</option>
+                  </select>
+                </div>
+              </div>
+
+              <button type="button" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl transition-colors">
+                Add to Queue
+              </button>
+            </form>
+          </div>
+        )}
+
+        {/* LIVE QUEUE TAB */}
+        {activeTab === 'queue' && (
+          <div>
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2"><RefreshCw className="animate-spin text-indigo-500" /> Active Worker Queue</h2>
+            <div className="space-y-4">
+              {activeQueue.map((task) => (
+                <div key={task.id} className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                  <div className="w-1/3">
+                    <h3 className="font-bold text-lg">{task.course}</h3>
+                    <p className="text-sm text-slate-500">Task ID: {task.id} • Stage: <span className="font-mono text-indigo-600">{task.stage}</span></p>
+                  </div>
+                  
+                  <div className="w-1/3 px-6">
+                    <div className="w-full bg-slate-200 rounded-full h-2.5 mb-2">
+                      <div className={`h-2.5 rounded-full ${task.status === 'FAILED' ? 'bg-red-500' : 'bg-indigo-600'}`} style={{ width: `${task.progress}%` }}></div>
+                    </div>
+                    <p className="text-xs text-right text-slate-500">{task.progress}% Complete</p>
+                  </div>
+
+                  <div className="w-1/4 flex justify-end">
+                    {task.status === 'PROCESSING' && <span className="flex items-center gap-1 text-amber-500 font-medium bg-amber-50 px-3 py-1 rounded-full"><RefreshCw size={16} className="animate-spin" /> Processing</span>}
+                    {task.status === 'QUEUED' && <span className="flex items-center gap-1 text-slate-500 font-medium bg-slate-100 px-3 py-1 rounded-full"><Clock size={16} /> Queued</span>}
+                    {task.status === 'FAILED' && (
+                      <button className="flex items-center gap-1 text-white font-medium bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg transition-colors shadow-sm">
+                        <AlertCircle size={16} /> Retry Task
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* HISTORY & ASSETS TAB */}
+        {activeTab === 'history' && (
+          <div>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold">Historical Assets</h2>
+              <button className="flex items-center gap-2 bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700">
+                <Download size={18} /> Export CSV
+              </button>
+            </div>
+            
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+              <table className="w-full text-left">
+                <thead className="bg-slate-50 border-b border-slate-200 text-slate-600">
+                  <tr>
+                    <th className="p-4 font-medium">Course Title</th>
+                    <th className="p-4 font-medium">Type</th>
+                    <th className="p-4 font-medium">Date Generated</th>
+                    <th className="p-4 font-medium">Assets Available</th>
+                    <th className="p-4 font-medium">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {history.map((row) => (
+                    <tr key={row.id} className="hover:bg-slate-50">
+                      <td className="p-4 font-medium">{row.title}</td>
+                      <td className="p-4 text-sm">{row.type}</td>
+                      <td className="p-4 text-sm text-slate-500">{row.date}</td>
+                      <td className="p-4">
+                        <div className="flex gap-2">
+                           <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">MP3</span>
+                           <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">SRT</span>
+                           <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded">JSON</span>
+                        </div>
+                      </td>
+                      <td className="p-4 flex gap-3">
+                        <button className="text-indigo-600 hover:text-indigo-800" title="Play Audio"><Play size={20} /></button>
+                        <button className="text-indigo-600 hover:text-indigo-800" title="View Transcript"><FileText size={20} /></button>
+                        <button className="text-indigo-600 hover:text-indigo-800" title="View Landing Page"><LayoutDashboard size={20} /></button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+      </div>
+    </div>
+  );
+}
