@@ -1,0 +1,60 @@
+Your regular VM config from what you created:
+
+```text
+Name: transcription-vm-regular
+Zone: asia-south1-a
+Machine type: e2-standard-4
+CPU: 4 vCPU
+RAM: 16 GB
+Disk: 50 GB pd-balanced
+VM type: Regular / Standard, not Spot
+External IP: 34.180.35.103
+Service account: course-transcriber-sa@ninth-arena-404220.iam.gserviceaccount.com
+```
+
+Check VM config:
+
+```bash
+gcloud compute instances describe transcription-vm-regular \
+  --zone=asia-south1-a \
+  --format="table(name,status,machineType,disks[0].diskSizeGb,networkInterfaces[0].accessConfigs[0].natIP)"
+```
+
+Inside VM, check CPU/RAM live:
+
+```bash
+top
+```
+
+Better readable view:
+
+```bash
+sudo apt-get install -y htop
+htop
+```
+
+Check Docker container usage:
+
+```bash
+docker stats course-engine
+```
+
+Check disk:
+
+```bash
+df -h
+```
+
+Check memory:
+
+```bash
+free -h
+```
+
+For your app specifically, best quick command:
+
+```bash
+docker stats course-engine
+```
+
+That shows CPU %, memory, network, and disk I/O live.
