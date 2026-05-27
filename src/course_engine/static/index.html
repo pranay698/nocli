@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Transcription Course Engine</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <h1>Transcription Course Engine</h1>
+          <p>Queue videos, choose a transcription engine, and save transcripts back to GCS.</p>
+        </div>
+        <button id="refreshButton" class="iconButton" type="button" title="Refresh">↻</button>
+      </header>
+
+      <section class="metrics" aria-label="Task summary">
+        <div><span id="queuedCount">0</span><label>Waiting</label></div>
+        <div><span id="runningCount">0</span><label>Running</label></div>
+        <div><span id="doneCount">0</span><label>Done</label></div>
+        <div><span id="failedCount">0</span><label>Failed</label></div>
+        <div><span id="canceledCount">0</span><label>Canceled</label></div>
+      </section>
+
+      <section class="workspace">
+        <section class="panel">
+          <div class="tabs">
+            <button id="transcribeTab" class="tab active" type="button">Transcribe</button>
+            <button id="downloadTab" class="tab" type="button">Downloader</button>
+            <button id="accessTab" class="tab" type="button">Access</button>
+            <button id="accountsTab" class="tab" type="button">Accounts</button>
+          </div>
+
+        <form id="taskForm">
+          <div class="panelTitle">
+            <h2>New Transcription</h2>
+            <span id="uploadHint"></span>
+          </div>
+
+          <label>
+            Input source
+            <select id="sourceType" name="source_type">
+              <option value="google_drive">Google Drive public file</option>
+              <option value="google_drive_folder">Google Drive public folder</option>
+              <option value="drive_ytdlp_mp3">Google Drive video to MP3 with yt-dlp</option>
+              <option value="mp3_drive">Google Drive MP3 file</option>
+              <option value="transcript_drive_doc">Google Drive Doc transcript</option>
+              <option value="transcript_drive_txt">Google Drive TXT transcript</option>
+              <option value="gcs">Google Cloud Storage file</option>
+              <option value="gcs_folder">Google Cloud Storage folder</option>
+              <option value="mp3_gcs">Google Cloud Storage MP3 file</option>
+              <option value="transcript_gcs">Google Cloud Storage TXT transcript</option>
+              <option value="public_url">Public video/audio URL</option>
+              <option value="mp3_public">Public MP3 URL</option>
+              <option value="transcript_public">Public TXT transcript URL</option>
+              <option value="r2">Cloudflare R2 public file</option>
+              <option value="mp3_r2">Cloudflare R2 public MP3</option>
+              <option value="upload">Upload video</option>
+              <option value="mp3_upload">Upload MP3</option>
+              <option value="transcript_upload">Upload TXT transcript</option>
+            </select>
+          </label>
+
+          <label id="linksField">
+            Links or folder path
+            <textarea id="sourceValues" rows="7" placeholder="One link per line&#10;gs://bucket/raw-videos/video-1.mp4&#10;https://drive.google.com/file/d/..."></textarea>
+          </label>
+
+          <label id="uploadField" class="hidden">
+            <span id="uploadLabel">Upload videos</span>
+            <input id="uploadFiles" type="file" multiple accept="video/*" />
+          </label>
+
+          <div class="gridTwo">
+            <label>
+              Transcription engine
+              <select id="engine" name="engine">
+                <option value="convert_mp3">Convert to MP3 only</option>
+                <option value="google_speech">Google Speech-to-Text</option>
+                <option value="whisper_tiny">Whisper tiny</option>
+                <option value="whisper_small">Whisper small</option>
+                <option value="whisper_large_turbo">Whisper large turbo</option>
+              </select>
+            </label>
+
+            <label>
+              Language
+              <input id="languageCode" value="en-IN" />
+            </label>
+          </div>
+
+          <label>
+            Save transcript to
+            <input id="transcriptPrefix" placeholder="gs://bucket/transcripts/" />
+          </label>
+
+          <label>
+            Save MP3/audio to
+            <input id="audioPrefix" placeholder="gs://bucket/audio/" />
+          </label>
+
+          <label>
+            Split audio into chunks
+            <select id="chunkMinutes">
+              <option value="0">No split</option>
+              <option value="5">5 minutes</option>
+              <option value="10">10 minutes</option>
+              <option value="15">15 minutes</option>
+              <option value="20">20 minutes</option>
+            </select>
+          </label>
+
+          <label>
+            Landing page prompt file
+            <input id="landingPromptFile" type="file" accept=".docx,.txt,.md" />
+          </label>
+
+          <label class="checkRow">
+            <input id="useDemoPrompt" type="checkbox" />
+            Use demo prompt for landing pages
+          </label>
+
+          <label>
+            Landing page vibe
+            <select id="landingVibe">
+              <option value="luxury">Deep Indigo and Gold</option>
+              <option value="modern">Midnight Black and Neon Teal</option>
+              <option value="organic">Forest Green and Cream</option>
+            </select>
+          </label>
+
+          <label class="checkRow">
+            <input id="saveMp3" type="checkbox" checked />
+            Save converted MP3 in Google Cloud Storage
+          </label>
+
+          <button class="primary" type="submit">Add to Queue</button>
+          <p id="formMessage" class="message"></p>
+        </form>
+
+        <form id="downloadForm" class="hidden">
+          <div class="panelTitle">
+            <h2>Downloader</h2>
+          </div>
+
+          <label>
+            Source
+            <select id="downloadSourceType">
+              <option value="google_drive">Google Drive public file</option>
+              <option value="google_drive_folder">Google Drive public folder</option>
+              <option value="public_url">Public video/audio URL</option>
+              <option value="r2">Cloudflare R2 public file</option>
+            </select>
+          </label>
+
+          <label>
+            Links or folder path
+            <textarea id="downloadSourceValues" rows="7" placeholder="One link per line&#10;https://drive.google.com/file/d/..."></textarea>
+          </label>
+
+          <label>
+            Save original file to
+            <input id="downloadDestinationPrefix" placeholder="gs://bucket/raw-videos/" />
+          </label>
+
+          <button class="primary" type="submit">Download to GCS</button>
+          <p id="downloadMessage" class="message"></p>
+        </form>
+
+        <section id="accessPanel" class="hidden">
+          <div class="panelTitle">
+            <h2>Access & Permissions</h2>
+          </div>
+
+          <label>
+            Provider
+            <select id="accessProvider">
+              <option value="gcs">Google Cloud Storage</option>
+              <option value="r2_public">Cloudflare R2 public link</option>
+              <option value="r2_private">Cloudflare R2 private bucket</option>
+            </select>
+          </label>
+
+          <label>
+            Bucket or source
+            <input id="accessBucket" placeholder="gs://other-source-bucket or R2 bucket/domain" />
+          </label>
+
+          <label>
+            App service account
+            <input id="accessServiceAccount" />
+          </label>
+
+          <label>
+            Needed access
+            <select id="accessMode">
+              <option value="read">Read source videos</option>
+              <option value="write">Write outputs</option>
+              <option value="read_write">Read and write</option>
+            </select>
+          </label>
+
+          <button class="primary" id="generateAccessButton" type="button">Generate Instructions</button>
+
+          <label>
+            Copy these instructions
+            <textarea id="accessOutput" rows="12" readonly></textarea>
+          </label>
+          <button class="secondary" id="copyAccessButton" type="button">Copy Instructions</button>
+        </section>
+
+        <section id="accountsPanel" class="hidden">
+          <div class="panelTitle">
+            <h2>Authenticated Accounts</h2>
+          </div>
+
+          <label>
+            Account name
+            <input id="accountName" placeholder="Client GCS bucket, Drive account, R2 source..." />
+          </label>
+
+          <label>
+            Provider
+            <select id="accountProvider">
+              <option value="gcs">Google Cloud Storage</option>
+              <option value="gdrive">Google Drive</option>
+              <option value="r2">Cloudflare R2</option>
+            </select>
+          </label>
+
+          <label>
+            Authentication method
+            <select id="accountAuthMethod">
+              <option value="service_account_iam">Service account IAM grant</option>
+              <option value="public_link">Public link</option>
+              <option value="secret_manager">Secret Manager credential</option>
+              <option value="vm_env">VM environment variables</option>
+            </select>
+          </label>
+
+          <label>
+            Status
+            <select id="accountStatus">
+              <option value="pending">Pending</option>
+              <option value="connected">Connected</option>
+              <option value="failed">Failed</option>
+            </select>
+          </label>
+
+          <label>
+            Notes / bucket / secret name
+            <textarea id="accountNotes" rows="4" placeholder="Example: gs://client-bucket granted objectViewer to service account"></textarea>
+          </label>
+
+          <button class="primary" id="saveAccountButton" type="button">Save Account</button>
+          <div id="accountList" class="accountList"></div>
+        </section>
+        </section>
+
+        <section class="panel">
+          <div class="panelTitle">
+            <h2>Task History</h2>
+            <div class="historyActions">
+              <a class="smallButton" href="/api/tasks.csv">Export CSV</a>
+              <span id="lastUpdated"></span>
+            </div>
+          </div>
+          <div id="taskList" class="taskList"></div>
+
+          <div class="assetTableHeader">
+            <h2>Historic Course Assets</h2>
+          </div>
+          <div class="tableWrap">
+            <table class="assetTable">
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Video</th>
+                  <th>MP3</th>
+                  <th>Transcript</th>
+                  <th>Refined</th>
+                  <th>Course title</th>
+                  <th>Course description</th>
+                  <th>Course data</th>
+                  <th>Prompt</th>
+                  <th>Landing page</th>
+                </tr>
+              </thead>
+              <tbody id="assetTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <template id="taskTemplate">
+      <article class="task">
+        <div class="taskHeader">
+          <div>
+            <strong data-field="source"></strong>
+            <p data-field="message"></p>
+          </div>
+          <span data-field="status" class="status"></span>
+        </div>
+        <div class="bar"><span data-field="progress"></span></div>
+        <dl>
+          <div><dt>Source</dt><dd data-field="sourceLink"></dd></div>
+          <div><dt>Source folder</dt><dd data-field="sourceFolder"></dd></div>
+          <div><dt>Saved video</dt><dd data-field="savedVideo"></dd></div>
+          <div><dt>Stage</dt><dd data-field="stage"></dd></div>
+          <div><dt>Started</dt><dd data-field="startedAt"></dd></div>
+          <div><dt>Ended</dt><dd data-field="completedAt"></dd></div>
+          <div><dt>Chunking</dt><dd data-field="chunking"></dd></div>
+          <div><dt>Engine</dt><dd data-field="engine"></dd></div>
+          <div><dt>Open</dt><dd data-field="actions"></dd></div>
+          <div><dt>Control</dt><dd data-field="controls"></dd></div>
+          <div><dt>Transcript</dt><dd data-field="transcript"></dd></div>
+          <div><dt>MP3</dt><dd data-field="mp3"></dd></div>
+          <div><dt>Task log</dt><dd data-field="taskLog"></dd></div>
+          <div><dt>Failed reason</dt><dd data-field="error"></dd></div>
+        </dl>
+      </article>
+    </template>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

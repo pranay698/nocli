@@ -1,0 +1,10 @@
+google-cloud-storage>=2.18.0
+google-cloud-speech>=2.27.0
+google-auth>=2.35.0
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+python-multipart>=0.0.9
+requests>=2.32.0
+faster-whisper>=1.0.3
+gdown>=5.2.0
+yt-dlp>=2025.5.22
