@@ -1,0 +1,14 @@
+response_schema = {
+    "type": "object",
+    "properties": {
+        "refined_transcript": {"type": "string", "description": "The transcript with all grammatical and technical spelling errors fixed."},
+        "course_metadata": {
+            "type": "object",
+            "properties": {
+                "title": {"type": "string"},
+                "description": {"type": "string"}
+            }
+        },
+        "landing_page_html": {"type": "string", "description": "A fully written Tailwind HTML section for this specific class."}
+    }
+}
